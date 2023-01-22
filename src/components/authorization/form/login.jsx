@@ -8,18 +8,54 @@ import {
     InputText,
     InputWrap,
     LoginButton,
-    InputForm, Input, ErrorWrap, ErrorText
-} from "../form.styles";
+    InputForm, Input, ErrorWrap, ErrorText, ButtonContainer, ButtonImage, ButtonGoogle
+} from "./form.styles";
 import {validationSchema} from "./validation/validation";
+import {login, loginWithGoogle, resetPassword} from "../../../services/service";
+import {notifyError, notifySuccess} from "../../../services/notification";
+import {OtherButton, OtherButtonsWrap} from "../sign-in/signin.styles";
+import {useDispatch, useSelector} from "react-redux";
+import {switchLogin} from "../../../redux/authSlice";
 
 export const Login = () => {
-/*    const valuesList = ["email", "password"];*/
 
     const [visible, setVisible] = useState(false);
+    const isLogin = useSelector(state => state.auth.isLogin)
+    const dispatch = useDispatch();
 
-    const handleSubmit = (event) => {
-        alert(JSON.stringify(event, null, 2));
+    const handleSwitchLogin = (e) => {
+        e.preventDefault()
+        dispatch(switchLogin())
     }
+
+    const handleSubmit = async (event) => {
+        try {
+            await login(event);
+            notifySuccess("You have successfully logged in")
+        } catch (e) {
+            notifyError(e.message);
+        }
+    }
+
+    const handleSubmitGoogle = async () => {
+        try {
+            await loginWithGoogle();
+            notifySuccess("You have successfully logged in");
+        } catch (e) {
+            notifyError(e.message);
+        }
+    }
+
+    const handleResetPass = async (event) => {
+        event.preventDefault();
+        try {
+            await resetPassword(formik.values.email);
+            notifySuccess("Check your email")
+        } catch (e) {
+            notifyError(e.message)
+        }
+    }
+
     const visibleChange = () => {
         if (visible) {
             setVisible(false)
@@ -71,7 +107,16 @@ export const Login = () => {
                         </ErrorWrap>
                     ) : null}
                 </InputContainer>
-                <LoginButton type={"submit"} color={formik.errors.email || formik.errors.password}>Login</LoginButton>
+                <ButtonContainer>
+                    <LoginButton type={"submit"} color={formik.errors.email || formik.errors.password}>Login</LoginButton>
+                    <LoginButton onClick={handleSubmitGoogle} color={formik.errors.email}>
+                        <ButtonImage src={IMAGES.google}/>
+                    </LoginButton>
+                </ButtonContainer>
+                <OtherButtonsWrap>
+                    <OtherButton href={""} onClick={handleSwitchLogin}>{!isLogin ? "Login" : "Register"}</OtherButton>
+                    <OtherButton href={""} onClick={handleResetPass}>I forgot</OtherButton>
+                </OtherButtonsWrap>
             </InputForm>
     )
 }

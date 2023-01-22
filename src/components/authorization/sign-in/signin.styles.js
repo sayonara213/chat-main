@@ -4,19 +4,22 @@ export const LoginContainer = styled.div`
   width: 300px;
   height: auto;
   padding: 25px;
-  background-color: #f1f7fe; //f1f7fe
+  background-color: ${props => props.theme.color.secondary}; //f1f7fe
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   border-radius: 15px;
-
-  box-shadow: 0 5px 20px #000000;
+  
 `;
 
 export const LoginImage = styled.img`
-  width: 60%;
+  margin-bottom: 15px;
+  
+  width: 50%;
   height: auto;
+
+  filter: drop-shadow(1px 10px 10px RGBA(0, 0, 0, 0.2));
 `;
 
 export const OtherButtonsWrap = styled.div`
@@ -28,4 +31,5 @@ export const OtherButtonsWrap = styled.div`
 export const OtherButton = styled.a`
   font-size: 14px;
   color: #282c34;
+  font-family: ${props => props.theme.font.bold};
 `;

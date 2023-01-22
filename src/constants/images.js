@@ -4,6 +4,7 @@ import key from "../assets/icons/key.png"
 import hide from "../assets/icons/hide.png"
 import show from "../assets/icons/show.png"
 import user from "../assets/icons/user.png"
+import google from "../assets/icons/google.png"
 
 export const IMAGES = {
     logo,
@@ -11,5 +12,6 @@ export const IMAGES = {
     key,
     hide,
     show,
-    user
+    user,
+    google
 }

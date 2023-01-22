@@ -8,5 +8,5 @@ export const PageContainer = styled.div`
   justify-content: center;
   align-items: center;
   
-  background-color: #282c34; //dde5f4
+  background-color: ${props => props.theme.color.background}; //dde5f4
 `;
