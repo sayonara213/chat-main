@@ -1,10 +1,17 @@
-import logo from "../assets/icons/logo.svg"
-import mail from "../assets/icons/mail.png"
-import key from "../assets/icons/key.png"
-import hide from "../assets/icons/hide.png"
-import show from "../assets/icons/show.png"
-import user from "../assets/icons/user.png"
-import google from "../assets/icons/google.png"
+import logo from '../assets/icons/logo.svg'
+import mail from '../assets/icons/mail.svg'
+import key from '../assets/icons/key.png'
+import hide from '../assets/icons/hide.svg'
+import show from '../assets/icons/show.svg'
+import user from '../assets/icons/user.png'
+import google from '../assets/icons/google.png'
+import userGroup from '../assets/icons/user-group.png'
+import file from '../assets/icons/file.svg'
+import send from '../assets/icons/send.svg'
+import logOut from '../assets/icons/log-out.png'
+import settings from '../assets/icons/settings.png'
+import background from '../assets/images/background.png'
+import noAvatar from '../assets/images/no-avatar.png'
 
 export const IMAGES = {
     logo,
@@ -13,5 +20,12 @@ export const IMAGES = {
     hide,
     show,
     user,
-    google
+    google,
+    userGroup,
+    file,
+    send,
+    logOut,
+    settings,
+    background,
+    noAvatar,
 }

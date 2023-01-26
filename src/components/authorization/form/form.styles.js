@@ -1,132 +1,130 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export const Input = styled.input`
-  background-color: unset;
-  border: none;
-  font-size: 14px;
-  outline: none;
-  width: 90%;
-  &:-webkit-autofill {
-    -webkit-background-clip: text;
-  }
-
-  font-family: ${props => props.theme.font.bold};
-  color: ${props => props.theme.color.textSecondary};
-  &:-webkit-autofill,
-  &:-webkit-autofill:hover,
-  &:-webkit-autofill:focus {
+    background-color: unset;
     border: none;
-    -webkit-text-fill-color: ${props => props.theme.color.textSecondary};
-  }
-  &::placeholder {
-    color: ${props => props.theme.color.textSecondary};
-  }
-`;
+    font-size: 14px;
+    outline: none;
+    width: 90%;
+    &:-webkit-autofill {
+        -webkit-background-clip: text;
+    }
+
+    font-family: ${(props) => props.theme.font.regular};
+    color: ${(props) => props.theme.color.textSecondary};
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus {
+        border: none;
+        -webkit-text-fill-color: ${(props) => props.theme.color.textSecondary};
+    }
+    &::placeholder {
+        color: ${(props) => props.theme.color.textSecondary};
+    }
+`
 
 export const InputContainer = styled.div`
-  margin: 10px 0;
+    margin: 10px 0;
 
-  height: auto;
-  width: 100%;
-  background-color: ${props => props.theme.color.primary};
-  border-radius: 15px;
-  box-shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.43);
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
+    height: auto;
+    width: 100%;
+    background-color: ${(props) => props.theme.color.dark};
+    border-radius: 15px;
+    box-shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.43);
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
 
-  position: relative;
-  overflow: hidden;
-`;
+    position: relative;
+    overflow: hidden;
+`
 
 export const InputText = styled.p`
-  margin: 20px 15px 10px 15px;
-  font-size: 18px;
-  font-family: ${props => props.theme.font.bold};
-  color: ${props => props.theme.color.textSecondary};
-  user-select: none;
-
-`;
+    margin: 20px 15px 10px 15px;
+    font-size: 18px;
+    font-family: ${(props) => props.theme.font.regular};
+    color: ${(props) => props.theme.color.textSecondary};
+    user-select: none;
+`
 
 export const InputWrap = styled.div`
-  display: flex;
-  flex-direction: row;
-  margin: 0 15px 20px 15px;
-`;
+    display: flex;
+    flex-direction: row;
+    margin: 0 15px 20px 15px;
+`
 
 export const InputIcon = styled.img`
-  width: 20px;
-  height: auto;
-  margin-right: 5px;
+    width: 24px;
+    height: auto;
+    margin-right: 5px;
 
-  object-fit: cover;
-`;
+    object-fit: cover;
+`
 
 export const LoginButton = styled.button`
-  margin: 0 5px 10px 0;
-  position: relative;
-  
-  width: 100%;
-  height: 50px;
+    margin: 0 5px 10px 0;
+    position: relative;
 
-  background-color: ${props => props.theme.color.primary};
-  font-size: 18px;
-  color: ${props => props.theme.color.textSecondary};
-  box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.43);
+    width: 100%;
+    height: 50px;
 
-  border: none;
-  border-radius: 15px;
+    background-color: ${(props) => props.theme.color.dark};
+    font-size: 18px;
+    color: ${(props) => props.theme.color.textSecondary};
+    box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.43);
 
-  cursor: pointer;
-  
-  transition: 150ms ease-in-out;
+    border: none;
+    border-radius: 15px;
 
-  &:hover {
-    color: ${props => (props.color ? "#c45d5d" : "#FFFFFF")};
-    background-color: ${props => (props.color ? "#fdefef" : "#3e4685")};
-  }
+    cursor: pointer;
 
-  &:hover:before {
-    transform: translateY(0px);
-  }
+    transition: 150ms ease-in-out;
 
-  font-family: ${props => props.theme.font.bold};
-`;
+    &:hover {
+        color: ${(props) => (props.color ? '#c45d5d' : '#FFFFFF')};
+        background-color: ${(props) => (props.color ? '#fdefef' : '#3e4685')};
+    }
+
+    &:hover:before {
+        transform: translateY(0px);
+    }
+
+    font-family: ${(props) => props.theme.font.regular};
+`
 
 export const InputForm = styled.form`
-  margin: 0;
-  width: 100%;
-
-`;
+    margin: 0;
+    width: 100%;
+`
 
 export const ErrorWrap = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 0;
+    position: absolute;
+    bottom: 0;
+    left: 0;
 
-  display: flex;
-  width: 100%;
-  height: 18px;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    width: 100%;
+    height: 18px;
+    justify-content: center;
+    align-items: center;
 
-  background-color: #fdefef;
-`;
+    background-color: #fdefef;
+`
 
 export const ErrorText = styled.p`
-  margin: 0;
-  font-size: 12px;
-  color: #c45d5d;
-  font-family: ${props => props.theme.font.bold};
-`;
+    margin: 0;
+    font-size: 12px;
+    color: #c45d5d;
+    font-family: ${(props) => props.theme.font.regular};
+`
 
 export const ButtonContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
+    display: flex;
+    flex-direction: row;
+`
 
 export const ButtonImage = styled.img`
-  width: 25px;
-  height: 25px;
-  object-fit: cover;
-`;
+    width: 25px;
+    height: 25px;
+    object-fit: cover;
+`

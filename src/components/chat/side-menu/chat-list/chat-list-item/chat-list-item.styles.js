@@ -1,0 +1,48 @@
+import styled from 'styled-components'
+
+export const ChatListItemWrap = styled.div`
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 10px;
+
+    transition: background-color 0.2s ease-in-out;
+
+    background-color: ${(props) =>
+        props.current
+            ? props.theme.color.secondary
+            : props.theme.color.primary};
+
+    &:hover {
+        background-color: #2e6970;
+    }
+`
+export const ChatListItemAvatarWrap = styled.div``
+export const ChatListItemInfoWrap = styled.div`
+    margin-left: 15px;
+
+    width: calc(100% - 80px);
+`
+export const ChatListItemName = styled.h2`
+    font-size: ${(props) => props.theme.fontSize.medium};
+    font-weight: 800;
+    color: ${(props) => props.theme.color.text};
+    margin-bottom: 10px;
+    font-family: ${(props) => props.theme.font.regular};
+`
+export const ChatListItemLastMessage = styled.p`
+    display: inline-block;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+
+    width: 100%;
+    font-size: ${(props) => props.theme.fontSize.small};
+    font-weight: 400;
+    color: ${(props) => props.theme.color.text};
+    font-family: ${(props) => props.theme.font.regular};
+`

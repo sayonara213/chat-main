@@ -1,12 +1,12 @@
-import {auth} from "../../services/firebase";
+import { ChatWrap } from './chat.styles'
+import { ChatWindow } from './chat-window/chat-window'
+import { SideMenu } from './side-menu/siide-menu'
 
 export const Chat = () => {
-
-    const handleClick = () => {
-        auth.signOut().then(r => console.log(r));
-    }
-
-    return(
-        <button onClick={handleClick}>Sign out</button>
+    return (
+        <ChatWrap>
+            <SideMenu />
+            <ChatWindow />
+        </ChatWrap>
     )
 }
