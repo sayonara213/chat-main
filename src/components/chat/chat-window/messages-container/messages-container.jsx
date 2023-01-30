@@ -4,22 +4,52 @@ import {
 } from './messages-container.styles'
 import { Message } from './message/message'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
-import { collection, orderBy, query } from 'firebase/firestore'
+import { collection, orderBy, query, where } from 'firebase/firestore'
 import { auth, firestore } from '../../../../services/firebase'
 import { Loading } from '../../../loading/loading'
 import { useAuthState } from 'react-firebase-hooks/auth'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { Tools } from './tools/tools'
+import { motion, AnimatePresence } from 'framer-motion'
+import { useSelector } from 'react-redux'
 
 export const MessagesContainer = () => {
-    const bottomRef = useRef(null)
-
-    const [messages, loading, error] = useCollectionData(
-        query(collection(firestore, 'messages'), orderBy('createdAt', 'asc'))
-    )
     const [user, userLoading, obj] = useAuthState(auth)
 
+    const [tools, setTools] = useState(false)
+
+    const [mousePos, setMousePos] = useState({})
+
+    const [selectedMessage, setSelectedMessage] = useState('')
+
+    const currentChat = useSelector((state) => state.chats.currentChat)
+
+    const [messages, loading, error] = useCollectionData(
+        query(
+            collection(firestore, 'messages'),
+            where('chatId', '==', currentChat.chatId),
+            orderBy('createdAt', 'asc')
+        )
+    )
+
+    const bottomRef = useRef(null)
+
+    const handleToolsWindow = (event) => {
+        setSelectedMessage(event.currentTarget.getAttribute('data-uid'))
+        setTools(true)
+        const rect = document
+            .getElementById('message-container')
+            .getBoundingClientRect()
+        setMousePos({
+            x: event.clientX - rect.left,
+            y:
+                event.clientY > 680
+                    ? event.clientY - (rect.top + 120)
+                    : event.clientY - rect.top,
+        })
+    }
+
     useEffect(() => {
-        // 👇️ scroll to bottom every time messages change
         bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
     }, [messages])
 
@@ -28,21 +58,40 @@ export const MessagesContainer = () => {
     }
 
     return (
-        <MessagesContainerWrap>
+        <MessagesContainerWrap id={'message-container'}>
             <ChatMessagesContainer>
                 {messages.map(
                     (message) =>
                         message.createdAt && (
                             <Message
+                                key={message.messageId}
                                 text={message.text}
                                 avatar={message.photoURL}
                                 author={message.uid === user.uid}
                                 time={message.createdAt}
+                                uid={message.messageId}
+                                showTools={handleToolsWindow}
                             />
                         )
                 )}
                 <div ref={bottomRef} />
             </ChatMessagesContainer>
+            <AnimatePresence>
+                {tools && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.15 }}
+                    >
+                        <Tools
+                            hideTools={() => setTools(false)}
+                            pos={mousePos}
+                            message={selectedMessage}
+                        />
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </MessagesContainerWrap>
     )
 }

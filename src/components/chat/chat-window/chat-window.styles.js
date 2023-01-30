@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 
 export const ChatWindowWrap = styled.div`
+    position: relative;
     display: flex;
     flex-direction: column;
     width: 70%;

@@ -10,7 +10,7 @@ export const Input = styled.input`
         -webkit-background-clip: text;
     }
 
-    font-family: ${(props) => props.theme.font.regular};
+    font-family: 'regular', sans-serif;
     color: ${(props) => props.theme.color.textSecondary};
     &:-webkit-autofill,
     &:-webkit-autofill:hover,
@@ -42,7 +42,7 @@ export const InputContainer = styled.div`
 export const InputText = styled.p`
     margin: 20px 15px 10px 15px;
     font-size: 18px;
-    font-family: ${(props) => props.theme.font.regular};
+    font-family: 'regular', sans-serif;
     color: ${(props) => props.theme.color.textSecondary};
     user-select: none;
 `
@@ -89,7 +89,7 @@ export const LoginButton = styled.button`
         transform: translateY(0px);
     }
 
-    font-family: ${(props) => props.theme.font.regular};
+    font-family: 'regular', sans-serif;
 `
 
 export const InputForm = styled.form`
@@ -115,7 +115,7 @@ export const ErrorText = styled.p`
     margin: 0;
     font-size: 12px;
     color: #c45d5d;
-    font-family: ${(props) => props.theme.font.regular};
+    font-family: 'regular', sans-serif;
 `
 
 export const ButtonContainer = styled.div`

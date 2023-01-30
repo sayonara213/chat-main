@@ -9,7 +9,7 @@ import {
 } from './message.styles'
 import { CircleAvatar } from '../../../circle-avatar/circle-avatar'
 
-export const Message = ({ text, avatar, author, time }) => {
+export const Message = ({ text, avatar, author, time, uid, showTools }) => {
     return (
         <MessageContainer>
             <AvatarWrap>
@@ -17,7 +17,11 @@ export const Message = ({ text, avatar, author, time }) => {
                     <CircleAvatar src={avatar} size={30} />
                 </AbsoluteContainer>
             </AvatarWrap>
-            <MessageWrap author={author}>
+            <MessageWrap
+                author={author}
+                onDoubleClick={showTools}
+                data-uid={uid}
+            >
                 <MessageText>{text}</MessageText>
                 <MessageDateWrap>
                     <MessageDate>

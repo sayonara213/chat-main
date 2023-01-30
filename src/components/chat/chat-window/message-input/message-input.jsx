@@ -1,27 +1,37 @@
 import { useState } from 'react'
-import { ButtonIcon, Input, MessageInputWrap } from './message-input.styles'
+import {
+    ButtonIcon,
+    Input,
+    MessageInputWrap,
+    TextareaWrap,
+} from './message-input.styles'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { auth, firestore } from '../../../../services/firebase'
-import { addDoc, collection } from 'firebase/firestore'
+import { setDoc, collection, doc } from 'firebase/firestore'
 import { IMAGES } from '../../../../constants/images'
 import { serverTimestamp } from 'firebase/firestore'
+
+import TextareaAutosize from 'react-textarea-autosize'
+import { useSelector } from 'react-redux'
 
 export const MessageInput = () => {
     const [user, loading, error] = useAuthState(auth)
     const [message, setMessage] = useState('')
+    const currentChat = useSelector((state) => state.chats.currentChat)
 
-    const handleSendMessage = () => {
-        console.log(message)
-        message !== '' &&
-            addDoc(collection(firestore, 'messages'), {
+    const handleSendMessage = async () => {
+        if (message !== '') {
+            const newMessageRef = await doc(collection(firestore, 'messages'))
+            await setDoc(newMessageRef, {
+                messageId: newMessageRef.id,
+                chatId: currentChat.chatId,
                 uid: user.uid,
-                displayName: user.displayName,
                 photoURL: user.photoURL,
                 text: message,
                 createdAt: serverTimestamp(),
-                adminId: '5zA2b3qQpePqNWyYwGUL3J0Q8iT2',
             })
-        setMessage('')
+            setMessage('')
+        }
     }
 
     const handleKeypress = (e) => {
@@ -34,14 +44,16 @@ export const MessageInput = () => {
     return (
         <MessageInputWrap>
             <ButtonIcon src={IMAGES.file} />
-            <Input
-                type="text"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                placeholder={' Write your message...'}
-                rows={1}
-                onKeyDown={handleKeypress}
-            />
+            <TextareaWrap>
+                <TextareaAutosize
+                    type="text"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder={' Write your message...'}
+                    rows={1}
+                    onKeyDown={handleKeypress}
+                />
+            </TextareaWrap>
             <ButtonIcon
                 onClick={handleSendMessage}
                 src={IMAGES.send}

@@ -30,5 +30,5 @@ export const OtherButtonsWrap = styled.div`
 export const OtherButton = styled.a`
     font-size: 14px;
     color: #282c34;
-    font-family: ${(props) => props.theme.font.regular};
+    font-family: 'regular', sans-serif;
 `

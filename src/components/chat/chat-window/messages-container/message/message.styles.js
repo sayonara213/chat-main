@@ -9,7 +9,7 @@ export const MessageContainer = styled.div`
     align-items: center;
 `
 export const MessageText = styled.p`
-    font-family: ${(props) => props.theme.font.regular};
+    font-family: 'regular', serif;
     color: #ffffff;
     font-size: 12px;
     font-weight: 400;
@@ -23,7 +23,7 @@ export const MessageDateWrap = styled.div``
 export const MessageDate = styled.p`
     margin-left: 10px;
     line-height: 1.6;
-    font-family: ${(props) => props.theme.font.regular};
+    font-family: 'regular', serif;
     color: ${(props) => props.theme.color.time};
     font-size: ${(props) => props.theme.fontSize.small};
 `

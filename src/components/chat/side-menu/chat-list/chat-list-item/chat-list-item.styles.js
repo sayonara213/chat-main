@@ -31,7 +31,7 @@ export const ChatListItemName = styled.h2`
     font-weight: 800;
     color: ${(props) => props.theme.color.text};
     margin-bottom: 10px;
-    font-family: ${(props) => props.theme.font.regular};
+    font-family: 'regular', serif;
 `
 export const ChatListItemLastMessage = styled.p`
     display: inline-block;
@@ -44,5 +44,5 @@ export const ChatListItemLastMessage = styled.p`
     font-size: ${(props) => props.theme.fontSize.small};
     font-weight: 400;
     color: ${(props) => props.theme.color.text};
-    font-family: ${(props) => props.theme.font.regular};
+    font-family: 'regular', serif;
 `

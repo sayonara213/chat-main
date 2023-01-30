@@ -7,21 +7,26 @@ import {
 } from './chat-list-item.styles'
 import { IMAGES } from '../../../../../constants/images'
 import { CircleAvatar } from '../../../circle-avatar/circle-avatar'
-import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { setCurrentChat } from '../../../../../redux/chatsSlice'
 
-export const ChatListItem = () => {
-    const [currentChat, setCurrentChat] = useState(false)
+export const ChatListItem = ({ chat }) => {
+    const currentChat = useSelector((state) => state.chats.currentChat)
+    const dispatch = useDispatch()
     const handleClick = () => {
-        setCurrentChat(!currentChat)
+        dispatch(setCurrentChat(chat))
     }
 
     return (
-        <ChatListItemWrap onClick={handleClick} current={currentChat}>
+        <ChatListItemWrap
+            onClick={handleClick}
+            current={currentChat.chatId === chat.chatId}
+        >
             <ChatListItemAvatarWrap>
                 <CircleAvatar src={IMAGES.noAvatar} size={60} />
             </ChatListItemAvatarWrap>
             <ChatListItemInfoWrap>
-                <ChatListItemName>Dave's Group</ChatListItemName>
+                <ChatListItemName>{chat.chatName}</ChatListItemName>
                 <ChatListItemLastMessage>
                     Text text text text text text text text text text text text
                     text text

@@ -42,7 +42,7 @@ export const ChatSearchInput = styled.input`
     outline: none;
     background-color: unset;
     color: ${(props) => props.theme.color.background};
-    font-family: ${(props) => props.theme.font.regular};
+    font-family: 'regular', serif;
     &::placeholder {
         color: ${(props) => props.theme.color.background};
     }

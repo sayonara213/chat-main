@@ -7,13 +7,27 @@ import {
     ChatHeaderText,
 } from './messages-container/messages-container.styles'
 import { IMAGES } from '../../../constants/images'
+import { useDispatch, useSelector } from 'react-redux'
+import { useState } from 'react'
+import { TransparentContainer } from '../../transparent-container/transparent-container.styles'
+import { switchSettings } from '../../../redux/chatsSlice'
 
 export const ChatWindow = () => {
+    const currentChat = useSelector((state) => state.chats.currentChat)
+    const dispatch = useDispatch()
+
+    const handleChatSettings = () => {
+        dispatch(switchSettings())
+    }
+
     return (
         <ChatWindowWrap>
             <ChatHeader>
-                <ChatHeaderText>David's chat group</ChatHeaderText>
-                <ChatHeaderButton src={IMAGES.userGroup}></ChatHeaderButton>
+                <ChatHeaderText>{currentChat.chatName}</ChatHeaderText>
+                <ChatHeaderButton
+                    src={IMAGES.userGroup}
+                    onClick={handleChatSettings}
+                ></ChatHeaderButton>
             </ChatHeader>
             <MessagesContainer />
             <MessageInput />

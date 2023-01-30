@@ -4,7 +4,9 @@ export const MessagesContainerWrap = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: calc(100% - 135px);
+    height: calc(100% - 130px);
+
+    position: relative;
 `
 export const ChatHeader = styled.div`
     z-index: 2;
@@ -18,13 +20,13 @@ export const ChatHeader = styled.div`
     background-color: ${(props) => props.theme.color.secondary};
     border-radius: 18px 18px 0 0;
 
-    box-shadow: 0 7px 5px #23333c;
+    box-shadow: 0 7px 12px #23333c;
 `
 
 export const ChatHeaderText = styled.h1`
     font-size: 20px;
     color: ${(props) => props.theme.color.text};
-    font-family: ${(props) => props.theme.font.regular};
+    font-family: 'regular', serif;
     font-weight: 400;
 `
 
