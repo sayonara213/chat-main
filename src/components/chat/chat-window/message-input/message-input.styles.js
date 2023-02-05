@@ -12,26 +12,9 @@ export const MessageInputWrap = styled.div`
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-
-    box-shadow: 0 -22px 20px #23333c;
+    box-shadow: 0 -20px 20px #23333c;
 `
 
-export const Input = styled.textarea`
-    margin: 0 20px;
-    padding: 0;
-    width: 90%;
-    white-space: pre-line;
-    border: none;
-    outline: none;
-    background-color: unset;
-    color: ${(props) => props.theme.color.background};
-    font-family: 'regular', serif;
-    &::placeholder {
-        color: ${(props) => props.theme.color.background};
-    }
-
-    resize: none;
-`
 export const ButtonIcon = styled.img`
     margin: 10px;
 
@@ -97,4 +80,37 @@ export const TextareaWrap = styled.div`
             background-color: ${(props) => props.theme.color.secondary};
         }
     }
+`
+export const InputContainer = styled.div`
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+`
+
+export const EditMessageWrap = styled.div`
+    /*    padding-bottom: 6px;*/
+
+    position: absolute;
+    top: -36px;
+
+    display: flex;
+    width: 100%;
+    height: 30px;
+
+    align-items: center;
+
+    background-color: ${(props) => props.theme.color.input};
+    border-radius: 8px;
+`
+
+export const EditMessageText = styled.p`
+    margin: 0 10px;
+
+    font-family: 'regular', serif;
+    font-size: ${(props) => props.theme.fontSize.small};
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 `

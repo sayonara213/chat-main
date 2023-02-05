@@ -20,13 +20,17 @@ export const MessagesContainer = () => {
 
     const [mousePos, setMousePos] = useState({})
 
-    const [selectedMessage, setSelectedMessage] = useState('')
+    const selectedMessage = useSelector((state) => state.chats.selectedMessage)
 
     const currentChat = useSelector((state) => state.chats.currentChat)
 
     const [messages, loading, error] = useCollectionData(
         query(
-            collection(firestore, 'messages'),
+            collection(
+                collection(firestore, 'chats'),
+                currentChat.chatId,
+                'messages'
+            ),
             where('chatId', '==', currentChat.chatId),
             orderBy('createdAt', 'asc')
         )
@@ -35,7 +39,6 @@ export const MessagesContainer = () => {
     const bottomRef = useRef(null)
 
     const handleToolsWindow = (event) => {
-        setSelectedMessage(event.currentTarget.getAttribute('data-uid'))
         setTools(true)
         const rect = document
             .getElementById('message-container')
@@ -70,6 +73,8 @@ export const MessagesContainer = () => {
                                 author={message.uid === user.uid}
                                 time={message.createdAt}
                                 uid={message.messageId}
+                                isEdited={message.isEdited}
+                                message={message}
                                 showTools={handleToolsWindow}
                             />
                         )
@@ -88,6 +93,7 @@ export const MessagesContainer = () => {
                             hideTools={() => setTools(false)}
                             pos={mousePos}
                             message={selectedMessage}
+                            chatId={currentChat.chatId}
                         />
                     </motion.div>
                 )}

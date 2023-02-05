@@ -9,7 +9,6 @@ import {
 import { IMAGES } from '../../../constants/images'
 import { useDispatch, useSelector } from 'react-redux'
 import { useState } from 'react'
-import { TransparentContainer } from '../../transparent-container/transparent-container.styles'
 import { switchSettings } from '../../../redux/chatsSlice'
 
 export const ChatWindow = () => {
@@ -18,6 +17,16 @@ export const ChatWindow = () => {
 
     const handleChatSettings = () => {
         dispatch(switchSettings())
+    }
+
+    if (!currentChat) {
+        return (
+            <ChatWindowWrap>
+                <ChatHeader></ChatHeader>
+
+                <MessageInput />
+            </ChatWindowWrap>
+        )
     }
 
     return (

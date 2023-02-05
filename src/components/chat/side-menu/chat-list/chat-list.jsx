@@ -1,42 +1,83 @@
-import { ChatListWrap } from './chat-list.styles'
+import {
+    ChatListWrap,
+    GlobalSearchText,
+    GlobalSearchWrap,
+} from './chat-list.styles'
 import { ChatListItem } from './chat-list-item/chat-list-item'
-import { useCollectionData } from 'react-firebase-hooks/firestore'
-import { collection, orderBy, query, where } from 'firebase/firestore'
-import { firestore, auth } from '../../../../services/firebase'
-import { Loading } from '../../../loading/loading'
-import { useAuthState } from 'react-firebase-hooks/auth'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { searchChats, searchUsers } from '../../../../redux/searchChatSlice'
+import {
+    collection,
+    doc,
+    query,
+    setDoc,
+    getDocs,
+    where,
+} from 'firebase/firestore'
+import { firestore } from '../../../../services/firebase'
+import { getAuth } from 'firebase/auth'
+import { UserItem } from './user-item/user-item'
 
 export const ChatList = () => {
-    const [user, userLoading] = useAuthState(auth)
-
-    const chatsRef = collection(firestore, 'chats')
-
-    const [combinedResult, setCombinedResult] = useState([])
-
-    const [privateChats, privateChatsLoading, privateChatsError] =
-        useCollectionData(
-            query(chatsRef, where('users', 'array-contains', user.uid))
-        )
-
-    const [publicChats, publicChatsLoading, publicChatsError] =
-        useCollectionData(query(chatsRef, where('isPublic', '==', true)))
+    const { search, results } = useSelector((state) => state.search)
+    const dispatch = useDispatch()
 
     useEffect(() => {
-        if (!privateChatsLoading && !publicChatsLoading) {
-            setCombinedResult([...privateChats, ...publicChats])
-        }
-    }, [privateChatsLoading, publicChatsLoading, privateChats, publicChats])
+        dispatch(searchChats(search))
+        dispatch(searchUsers(search))
+    }, [dispatch, search])
 
-    if (privateChatsLoading || publicChatsLoading || userLoading) {
-        return <Loading />
+    const handleClick = (user) => {
+        doesChatExist(user).then((exists) => {
+            if (!exists) {
+                const newChatRef = doc(collection(firestore, 'chats'))
+                setDoc(newChatRef, {
+                    chatId: user.uid + getAuth().currentUser.uid,
+                    chatName: 'Personal',
+                    chatType: 'personal',
+                    users: [
+                        { uid: user.uid, username: user.username },
+                        {
+                            uid: getAuth().currentUser.uid,
+                            username: getAuth().currentUser.displayName,
+                        },
+                    ],
+                })
+            } else {
+                console.log(`chat already exists`)
+            }
+        })
+    }
+
+    const doesChatExist = async (user) => {
+        const chatsRef = query(
+            collection(firestore, 'chats'),
+            where('chatId', '==', user.uid + getAuth().currentUser.uid),
+            where('chatType', '==', 'personal')
+        )
+        return !(await getDocs(chatsRef)).empty
     }
 
     return (
         <ChatListWrap>
-            {combinedResult.map((chat) => (
+            {results.chats?.map((chat) => (
                 <ChatListItem key={chat.chatId} chat={chat} />
             ))}
+            {search && (
+                <>
+                    <GlobalSearchWrap>
+                        <GlobalSearchText>Global Search:</GlobalSearchText>
+                    </GlobalSearchWrap>
+                    {results.users.map((user) => (
+                        <UserItem
+                            user={user}
+                            key={user.username}
+                            click={handleClick}
+                        />
+                    ))}
+                </>
+            )}
         </ChatListWrap>
     )
 }

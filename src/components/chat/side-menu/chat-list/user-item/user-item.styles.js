@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const ChatListItemWrap = styled.div`
+export const UserItemWrap = styled.div`
     margin-bottom: 10px;
     display: flex;
     flex-direction: row;
@@ -21,16 +21,15 @@ export const ChatListItemWrap = styled.div`
     }
 `
 export const ChatListItemAvatarWrap = styled.div``
-export const ChatListItemInfoWrap = styled.div`
+export const UserItemInfoWrap = styled.div`
     margin-left: 15px;
 
     width: calc(100% - 80px);
 `
-export const ChatListItemName = styled.h2`
+export const UserName = styled.h2`
     font-size: ${(props) => props.theme.fontSize.medium};
     font-weight: 800;
     color: ${(props) => props.theme.color.text};
-    margin-bottom: 10px;
     font-family: 'regular', serif;
 `
 export const ChatListItemLastMessage = styled.p`

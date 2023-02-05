@@ -54,3 +54,40 @@ export const MessageWrap = styled.div`
     background-color: ${(props) =>
         props.author ? props.theme.color.secondary : props.theme.color.primary};
 `
+
+export const MessageAddWrap = styled.div`
+    display: flex;
+    flex-direction: column;
+`
+
+export const ReplyWrap = styled.div`
+    margin: 0 0 10px 5px;
+    border-left: 2px solid ${(props) => props.theme.color.text};
+`
+
+export const ReplyUsername = styled.p`
+    margin: 0 0 5px 5px;
+    max-width: 200px;
+    font-family: 'regular', serif;
+    color: ${(props) => props.theme.color.text};
+
+    font-size: ${(props) => props.theme.fontSize.small};
+    font-weight: 600;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+`
+
+export const ReplyMessage = styled.p`
+    margin: 0 0 0 5px;
+    max-width: 200px;
+    font-family: 'regular', serif;
+    color: ${(props) => props.theme.color.text};
+
+    font-size: ${(props) => props.theme.fontSize.small};
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+`

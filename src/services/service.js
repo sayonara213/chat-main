@@ -18,11 +18,6 @@ export const register = async (user) => {
     await createUserWithEmailAndPassword(auth, user.email, user.password)
         .then((userCredential) => {
             const user = userCredential.user
-            addDoc(collection(firestore, 'users'), {
-                uid: user.uid,
-                email: user.email,
-                authProvider: 'email',
-            })
 
             createAvatar(user.email)
                 .then((res) => res.data)
@@ -38,6 +33,13 @@ export const register = async (user) => {
                                 updateProfile(auth.currentUser, {
                                     displayName: nicknameGenerator(user.email),
                                     photoURL: url,
+                                })
+                                addDoc(collection(firestore, 'users'), {
+                                    uid: user.uid,
+                                    email: user.email,
+                                    authProvider: 'email',
+                                    username: nicknameGenerator(user.email),
+                                    avatar: url,
                                 })
                             })
                         })
@@ -89,7 +91,9 @@ export const registerWithGoogle = async () => {
             addDoc(collection(firestore, 'users'), {
                 uid: user.uid,
                 email: user.email,
+                username: user.displayName,
                 authProvider: 'google',
+                avatar: user.photoURL,
             })
             return user
         })
