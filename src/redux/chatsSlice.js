@@ -5,6 +5,7 @@ const chatsSlice = createSlice({
     initialState: {
         currentChat: null,
         isSettingsOpen: false,
+        isProfileOpen: false,
         selectedMessage: null,
     },
     reducers: {
@@ -17,10 +18,17 @@ const chatsSlice = createSlice({
         setSelectedMessage: (state, action) => {
             state.selectedMessage = action.payload
         },
+        switchProfile: (state) => {
+            state.isProfileOpen = !state.isProfileOpen
+        },
     },
 })
 
 export default chatsSlice.reducer
 
-export const { setCurrentChat, switchSettings, setSelectedMessage } =
-    chatsSlice.actions
+export const {
+    setCurrentChat,
+    switchSettings,
+    setSelectedMessage,
+    switchProfile,
+} = chatsSlice.actions

@@ -33,13 +33,14 @@ export const register = async (user) => {
                                 updateProfile(auth.currentUser, {
                                     displayName: nicknameGenerator(user.email),
                                     photoURL: url,
-                                })
-                                addDoc(collection(firestore, 'users'), {
-                                    uid: user.uid,
-                                    email: user.email,
-                                    authProvider: 'email',
-                                    username: nicknameGenerator(user.email),
-                                    avatar: url,
+                                }).then(() => {
+                                    addDoc(collection(firestore, 'users'), {
+                                        uid: user.uid,
+                                        email: user.email,
+                                        authProvider: 'email',
+                                        username: nicknameGenerator(user.email),
+                                        avatar: url,
+                                    })
                                 })
                             })
                         })

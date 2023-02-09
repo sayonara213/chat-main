@@ -10,6 +10,7 @@ import { IMAGES } from '../../../constants/images'
 import { useDispatch, useSelector } from 'react-redux'
 import { useState } from 'react'
 import { switchSettings } from '../../../redux/chatsSlice'
+import { CircleAvatar } from '../circle-avatar/circle-avatar'
 
 export const ChatWindow = () => {
     const currentChat = useSelector((state) => state.chats.currentChat)
@@ -32,11 +33,13 @@ export const ChatWindow = () => {
     return (
         <ChatWindowWrap>
             <ChatHeader>
+                <ChatHeaderButton onClick={handleChatSettings}>
+                    <CircleAvatar
+                        size={40}
+                        src={currentChat.chatImage}
+                    ></CircleAvatar>
+                </ChatHeaderButton>
                 <ChatHeaderText>{currentChat.chatName}</ChatHeaderText>
-                <ChatHeaderButton
-                    src={IMAGES.userGroup}
-                    onClick={handleChatSettings}
-                ></ChatHeaderButton>
             </ChatHeader>
             <MessagesContainer />
             <MessageInput />

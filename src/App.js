@@ -13,11 +13,14 @@ import { TransparentContainer } from './components/transparent-container/transpa
 import { useDispatch, useSelector } from 'react-redux'
 import { switchSettings } from './redux/chatsSlice'
 import { ChatSettings } from './components/chat/chat-window/chat-settings/chat-settings'
+import { useState } from 'react'
+import { ProfileSettings } from './components/chat/chat-window/profile-settings/profile-settings'
 
 function App() {
     const [user, loading, error] = useAuthState(auth)
 
     const chatSettings = useSelector((state) => state.chats.isSettingsOpen)
+    const currentChat = useSelector((state) => state.chats.currentChat)
     const dispatch = useDispatch()
 
     const handleChatSettings = () => {
@@ -34,7 +37,12 @@ function App() {
 
     return (
         <Theme>
-            {chatSettings && <ChatSettings handleClose={handleChatSettings} />}
+            {chatSettings && (
+                <ChatSettings
+                    handleClose={handleChatSettings}
+                    chatType={currentChat.chatType}
+                />
+            )}
             <BrowserRouter>
                 <ToastContainer
                     position="top-center"

@@ -19,39 +19,47 @@ export const ChatListItem = ({ chat }) => {
     const currentChat = useSelector((state) => state.chats.currentChat)
     const [chatName, setChatName] = useState(chat.chatName)
     const [chatImage, setChatImage] = useState(IMAGES.noAvatar)
+    const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true)
 
     const dispatch = useDispatch()
     const handleClick = () => {
-        dispatch(
-            setCurrentChat({
-                chatId: chat.chatId,
-                chatName: chat.chatName,
-            })
-        )
+        chat.chatType === 'personal'
+            ? dispatch(
+                  setCurrentChat({
+                      chatId: chat.chatId,
+                      chatName: user.username,
+                      chatImage: user.avatar,
+                      chatUser: user,
+                      chatType: 'personal',
+                  })
+              )
+            : dispatch(
+                  setCurrentChat({
+                      chatId: chat.chatId,
+                      chatName: chat.chatName,
+                      chatImage: IMAGES.noAvatar,
+                      chatType: 'group',
+                  })
+              )
     }
 
     useEffect(() => {
-        console.log('chat in chat list rendered', chat)
         const fetchUserData = async () => {
             if (chat.chatType === 'personal') {
                 const chatUser = chat.users.find(
-                    (user) =>
-                        user !==
-                        {
-                            uid: getAuth().currentUser.uid,
-                            nickname: getAuth().currentUser.displayName,
-                        }
+                    (user) => user.uid !== getAuth().currentUser.uid
                 )
                 const usersRef = query(
                     collection(firestore, 'users'),
                     where('uid', '==', chatUser.uid)
                 )
-
+                //only one user is returned, so we can use getDoc() instead of getDocs()
                 getDocs(usersRef).then((querySnapshot) => {
                     querySnapshot.forEach((doc) => {
                         setChatName(doc.data().username)
                         setChatImage(doc.data().avatar)
+                        setUser(doc.data())
                         setLoading(false)
                     })
                 })

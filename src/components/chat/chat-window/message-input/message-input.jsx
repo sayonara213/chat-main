@@ -59,6 +59,7 @@ export const MessageInput = () => {
                     messageId: newMessageRef.id,
                     userName: user.displayName,
                     text: message,
+                    createdAt: serverTimestamp(),
                 },
             })
             dispatch(setInput(''))
@@ -139,7 +140,7 @@ export const MessageInput = () => {
                 <ButtonIcon
                     onClick={isEdit ? handleEditMessage : handleSendMessage}
                     src={IMAGES.send}
-                ></ButtonIcon>
+                />
             </MessageInputWrap>
         </InputContainer>
     )

@@ -4,7 +4,7 @@ export const ChatSettingsWrap = styled.div`
     width: 200px;
     height: 300px;
     padding: 25px;
-    background-color: ${(props) => props.theme.color.secondary};
+    background-color: ${(props) => props.theme.color.primary};
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -13,7 +13,7 @@ export const ChatSettingsWrap = styled.div`
 
 export const ChatName = styled.h1`
     margin: 0;
-    font-size: 18px;
+    font-size: 14px;
     color: ${(props) => props.theme.color.textSecondary};
     font-family: 'regular', sans-serif;
 `
@@ -26,3 +26,5 @@ export const ChatSettingsButton = styled.button`
     border: none;
     border-radius: 15px;
 `
+
+export const ChatAvatarWrap = styled.div``

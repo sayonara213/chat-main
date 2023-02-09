@@ -4,7 +4,7 @@ import {
 } from './messages-container.styles'
 import { Message } from './message/message'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
-import { collection, orderBy, query, where } from 'firebase/firestore'
+import { collection, orderBy, query } from 'firebase/firestore'
 import { auth, firestore } from '../../../../services/firebase'
 import { Loading } from '../../../loading/loading'
 import { useAuthState } from 'react-firebase-hooks/auth'
@@ -14,29 +14,44 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useSelector } from 'react-redux'
 
 export const MessagesContainer = () => {
+    const bottomRef = useRef(null)
+
     const [user, userLoading, obj] = useAuthState(auth)
 
-    const [tools, setTools] = useState(false)
-
-    const [mousePos, setMousePos] = useState({})
-
     const selectedMessage = useSelector((state) => state.chats.selectedMessage)
-
     const currentChat = useSelector((state) => state.chats.currentChat)
 
-    const [messages, loading, error] = useCollectionData(
+    const [messagesLimit, setMessagesLimit] = useState(2)
+    const [tools, setTools] = useState(false)
+    const [mousePos, setMousePos] = useState({})
+    /*    const [messages, setMessages] = useState([])*/
+
+    const [messages, loading, error, snapshot] = useCollectionData(
         query(
             collection(
                 collection(firestore, 'chats'),
                 currentChat.chatId,
                 'messages'
             ),
-            where('chatId', '==', currentChat.chatId),
-            orderBy('createdAt', 'asc')
+            orderBy('createdAt', 'desc')
         )
     )
+    /* useEffect(() => {
+        collection(firestore, 'chats')
+            .doc(currentChat.chatId)
+            .collection('messages')
+            .orderBy('createdAt', 'desc')
+            .limit(4)
+            .get()
+            .then((collection) => {
+                const messages = collection.docs.map((doc) => doc.data())
+                setMessages(messages)
+            })
+    }, [])*/
 
-    const bottomRef = useRef(null)
+    const fetchMore = () => {
+        setMessagesLimit(messagesLimit + 2)
+    }
 
     const handleToolsWindow = (event) => {
         setTools(true)
@@ -54,8 +69,11 @@ export const MessagesContainer = () => {
 
     useEffect(() => {
         bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
-    }, [messages])
+    }, [])
 
+    /*    useEffect(() => {
+        setReversedMessages(messages?.reverse())
+    }, [messages])*/
     if (loading || error) {
         return <Loading />
     }
@@ -68,11 +86,7 @@ export const MessagesContainer = () => {
                         message.createdAt && (
                             <Message
                                 key={message.messageId}
-                                text={message.text}
-                                avatar={message.photoURL}
                                 author={message.uid === user.uid}
-                                time={message.createdAt}
-                                uid={message.messageId}
                                 isEdited={message.isEdited}
                                 message={message}
                                 showTools={handleToolsWindow}

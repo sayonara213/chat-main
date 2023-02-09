@@ -12,6 +12,9 @@ import logOut from '../assets/icons/log-out.png'
 import settings from '../assets/icons/settings.png'
 import background from '../assets/images/background.png'
 import noAvatar from '../assets/images/no-avatar.png'
+import email from '../assets/icons/user-profile/email.png'
+import password from '../assets/icons/user-profile/password.png'
+import username from '../assets/icons/user-profile/username.png'
 
 export const IMAGES = {
     logo,
@@ -28,4 +31,7 @@ export const IMAGES = {
     settings,
     background,
     noAvatar,
+    email,
+    password,
+    username,
 }

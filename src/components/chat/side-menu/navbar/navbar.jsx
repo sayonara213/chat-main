@@ -10,11 +10,20 @@ import {
 import { IMAGES } from '../../../../constants/images'
 import { CircleAvatar } from '../../circle-avatar/circle-avatar'
 import { Loading } from '../../../loading/loading'
+import { useDispatch } from 'react-redux'
+import { switchProfile } from '../../../../redux/chatsSlice'
 
 export const Navbar = () => {
     const [user, loading, error] = useAuthState(auth)
+    const dispatch = useDispatch()
+
     const handleSignOut = () => {
         auth.signOut().then((r) => console.log(r))
+    }
+
+    const showProfileSettings = () => {
+        console.log('lol')
+        dispatch(switchProfile())
     }
 
     if (loading) {
@@ -23,7 +32,7 @@ export const Navbar = () => {
 
     return (
         <NavbarWrap>
-            <LogoWrap>
+            <LogoWrap onClick={showProfileSettings}>
                 <CircleAvatar src={user.photoURL} size={60} />
             </LogoWrap>
             <NavbarButtonsWrap>

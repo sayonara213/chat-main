@@ -14,7 +14,6 @@ export const ChatHeader = styled.div`
     display: flex;
     align-items: center;
     text-align: center;
-    justify-content: center;
     width: 100%;
     height: 55px;
     background-color: ${(props) => props.theme.color.secondary};
@@ -30,15 +29,15 @@ export const ChatHeaderText = styled.h1`
     font-weight: 400;
 `
 
-export const ChatHeaderButton = styled.img`
-    margin: 10px;
+export const ChatHeaderButton = styled.div`
+    margin: 20px;
     right: 20px;
 `
 
 export const ChatMessagesContainer = styled.div`
     padding-right: 200px;
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     height: 100%;
     overflow-y: scroll;
     width: calc(100% - 200px);
