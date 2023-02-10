@@ -48,11 +48,11 @@ export const ChatListItem = ({ chat }) => {
         const fetchUserData = async () => {
             if (chat.chatType === 'personal') {
                 const chatUser = chat.users.find(
-                    (user) => user.uid !== getAuth().currentUser.uid
+                    (user) => user !== getAuth().currentUser.uid
                 )
                 const usersRef = query(
                     collection(firestore, 'users'),
-                    where('uid', '==', chatUser.uid)
+                    where('uid', '==', chatUser)
                 )
                 //only one user is returned, so we can use getDoc() instead of getDocs()
                 getDocs(usersRef).then((querySnapshot) => {

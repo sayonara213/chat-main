@@ -48,10 +48,7 @@ export const ChatList = () => {
         query(
             chatsRef,
             /* orderBy('lastMessage.createdAt', 'desc'),*/
-            where('users', 'array-contains', {
-                uid: getAuth().currentUser.uid,
-                username: getAuth().currentUser.displayName,
-            })
+            where('users', 'array-contains', getAuth().currentUser.uid)
         )
     )
 
@@ -65,16 +62,9 @@ export const ChatList = () => {
             })
             setSearchedChatList(
                 chats.filter((chat) => {
-                    return (
-                        chat.chatName
-                            .toLowerCase()
-                            .includes(search.toLowerCase()) ||
-                        chat.users.some((user) =>
-                            user.username
-                                .toLowerCase()
-                                .includes(search.toLowerCase())
-                        )
-                    )
+                    return chat.chatName
+                        .toLowerCase()
+                        .includes(search.toLowerCase())
                 })
             )
         }
@@ -88,13 +78,7 @@ export const ChatList = () => {
                 chatId: newChatRef.id,
                 chatName: 'Personal',
                 chatType: 'personal',
-                users: [
-                    { uid: user.uid, username: user.username },
-                    {
-                        uid: getAuth().currentUser.uid,
-                        username: getAuth().currentUser.displayName,
-                    },
-                ],
+                users: [user.uid, getAuth().currentUser.uid],
             }).then(() => {
                 dispatch(
                     setCurrentChat({
@@ -125,10 +109,7 @@ export const ChatList = () => {
     const doesChatExist = async (user) => {
         const chatsRef = query(
             collection(firestore, 'chats'),
-            where('users', 'array-contains', {
-                uid: getAuth().currentUser.uid,
-                username: getAuth().currentUser.displayName,
-            }),
+            where('users', 'array-contains', getAuth().currentUser.uid),
             where('chatType', '==', 'personal')
         )
         const chat = await getDocs(chatsRef)

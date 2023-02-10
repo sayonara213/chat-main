@@ -22,7 +22,7 @@ export const ProfileInputIcon = styled.img`
 `
 
 export const ProfileInputText = styled.p`
-    width: 100px;
+    width: 70px;
     font-size: ${(props) => props.theme.fontSize.small};
     font-weight: 500;
     color: ${(props) => props.theme.color.text};
@@ -41,4 +41,17 @@ export const ProfileInputField = styled.input`
     &::placeholder {
         color: ${(props) => props.theme.color.text};
     }
+`
+
+export const SubmitButtonWrap = styled.div`
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`
+
+export const SubmitButton = styled.img`
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
 `

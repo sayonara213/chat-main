@@ -1,5 +1,7 @@
 import { TransparentContainer } from '../../../transparent-container/transparent-container.styles'
 import {
+    ChangeAvatarButton,
+    ChangeAvatarWrap,
     InputSubmit,
     MaxCharLabel,
     ProfileBioInput,
@@ -15,7 +17,7 @@ import {
     UserProfileWrap,
 } from './profile-settings.styles'
 import { useAuthState } from 'react-firebase-hooks/auth'
-import { auth, firestore } from '../../../../services/firebase'
+import { auth, firestore, storage } from '../../../../services/firebase'
 import { CircleAvatar } from '../../circle-avatar/circle-avatar'
 import { ProfileInput } from './profile-input/profile-input'
 import { IMAGES } from '../../../../constants/images'
@@ -24,9 +26,11 @@ import { useFormik } from 'formik'
 import { useEffect, useState } from 'react'
 import { validationSchema } from './validation/user-info-validation'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
-import { collection, query, where, updateDoc } from 'firebase/firestore'
+import { collection, query, where, updateDoc, addDoc } from 'firebase/firestore'
 import { notifyError, notifySuccess } from '../../../../services/notification'
 import { updateProfile } from 'firebase/auth'
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
+import { nicknameGenerator } from '../../../../services/nickname-generator'
 
 export const ProfileSettings = ({ onclick }) => {
     const [userAuth, userLoading] = useAuthState(auth)
@@ -37,25 +41,35 @@ export const ProfileSettings = ({ onclick }) => {
 
     const [bio, setBio] = useState('')
 
+    const formik = useFormik({
+        initialValues: {
+            email: '',
+            username: '',
+        },
+        validationSchema: validationSchema,
+    })
+
     const handleChangeBio = (e) => {
         setBio(e.target.value)
     }
+
     const handleBlurBio = () => {
-        updateDoc(snapshot.docs[0].ref, {
-            bio: bio.trim(),
-        })
-            .then(() => {
-                notifySuccess('Bio updated successfully')
+        if (bio.length > 0) {
+            updateDoc(snapshot.docs[0].ref, {
+                bio: bio.trim(),
             })
-            .catch((e) => {
-                notifyError('Bio update failed')
-            })
+                .then(() => {
+                    notifySuccess('Bio updated successfully')
+                })
+                .catch((e) => {
+                    notifyError('Bio update failed')
+                })
+        }
     }
-    const handleSubmit = () => {
+
+    const handleSubmitUsername = () => {
         updateProfile(auth.currentUser, {
             displayName: formik.values.username,
-            email: formik.values.email,
-            password: formik.values.password,
         })
             .then(() => {
                 notifySuccess('Profile updated successfully')
@@ -65,19 +79,45 @@ export const ProfileSettings = ({ onclick }) => {
             })
         updateDoc(snapshot.docs[0].ref, {
             username: formik.values.username,
+        })
+    }
+
+    const handleSubmitEmail = () => {
+        updateProfile(auth.currentUser, {
+            email: formik.values.email,
+        })
+            .then(() => {
+                notifySuccess('Profile updated successfully')
+            })
+            .catch(() => {
+                notifyError('Profile update failed')
+            })
+        updateDoc(snapshot.docs[0].ref, {
             email: formik.values.email,
         })
     }
 
-    const formik = useFormik({
-        initialValues: {
-            email: '',
-            password: '',
-            username: '',
-        },
-        onSubmit: handleSubmit,
-        validationSchema: validationSchema,
-    })
+    const uploadAvatar = (e) => {
+        const file = e.target.files[0]
+
+        const fileRef = ref(storage, `avatars/${userAuth.uid}/avatar.png`)
+        uploadBytesResumable(fileRef, file)
+            .then((uploadSnapshot) => {
+                console.log('Uploaded a blob or file!')
+                getDownloadURL(uploadSnapshot.ref).then((url) => {
+                    updateProfile(auth.currentUser, {
+                        photoURL: url,
+                    }).then(() => {
+                        updateDoc(snapshot.docs[0].ref, {
+                            avatar: url,
+                        })
+                    })
+                })
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    }
 
     useEffect(() => {
         setMaxChar(140 - bio.length)
@@ -93,11 +133,19 @@ export const ProfileSettings = ({ onclick }) => {
                             size={100}
                             src={userAuth.photoURL}
                         ></CircleAvatar>
+                        <ChangeAvatarWrap>
+                            <ChangeAvatarButton
+                                src={IMAGES.upload}
+                                type={'file'}
+                                accept="image/png, image/gif, image/jpeg"
+                                onChange={uploadAvatar}
+                            />
+                        </ChangeAvatarWrap>
                     </UserProfileAvatar>
                     <UserProfileName>{userAuth.displayName}</UserProfileName>
                     <UserProfileEmail>{userAuth.email}</UserProfileEmail>
                 </UserProfileWrap>
-                <UserProfileForm onSubmit={formik.handleSubmit}>
+                <UserProfileForm>
                     <UserInputContainer>
                         <ProfileBioWrap>
                             <ProfileBioInput>
@@ -127,6 +175,7 @@ export const ProfileSettings = ({ onclick }) => {
                             value={formik.values.username}
                             onchange={formik.handleChange}
                             name={'username'}
+                            onsubmit={handleSubmitUsername}
                         />
                         <ProfileInput
                             text={'Email'}
@@ -135,17 +184,9 @@ export const ProfileSettings = ({ onclick }) => {
                             value={formik.values.email}
                             onchange={formik.handleChange}
                             name={'email'}
-                        />
-                        <ProfileInput
-                            text={'Password'}
-                            placeholder={'* * * * * * * * *'}
-                            icon={IMAGES.password}
-                            value={formik.values.password}
-                            onchange={formik.handleChange}
-                            name={'password'}
+                            onsubmit={handleSubmitEmail}
                         />
                     </UserInputContainer>
-                    <InputSubmit>Submit</InputSubmit>
                 </UserProfileForm>
             </ProfileSettingsWrap>
         </TransparentContainer>

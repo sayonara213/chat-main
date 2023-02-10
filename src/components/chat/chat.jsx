@@ -8,9 +8,12 @@ import { switchProfile } from '../../redux/chatsSlice'
 export const Chat = () => {
     const profileSettings = useSelector((state) => state.chats.isProfileOpen)
     const dispatch = useDispatch()
-    const closeProfileSettings = () => {
-        dispatch(switchProfile())
+    const closeProfileSettings = (e) => {
+        if (e.target === e.currentTarget) {
+            dispatch(switchProfile())
+        }
     }
+
     return (
         <>
             {profileSettings && (

@@ -7,7 +7,6 @@ export const ProfileSettingsWrap = styled.div`
     flex-direction: column;
     align-items: center;
     width: 330px;
-    height: 500px;
     background-color: ${(props) => props.theme.color.dark};
 
     border-radius: 10px;
@@ -31,6 +30,27 @@ export const UserProfileWrap = styled.div`
 
 export const UserProfileAvatar = styled.div`
     margin-bottom: 10px;
+    position: relative;
+`
+
+export const ChangeAvatarWrap = styled.div`
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: ${(props) => props.theme.color.secondary};
+    cursor: pointer;
+    border: 3px solid ${(props) => props.theme.color.dark};
+`
+
+export const ChangeAvatarButton = styled.input`
+    width: 20px;
+    height: 20px;
 `
 
 export const UserProfileName = styled.p`

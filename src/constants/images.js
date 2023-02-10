@@ -15,6 +15,8 @@ import noAvatar from '../assets/images/no-avatar.png'
 import email from '../assets/icons/user-profile/email.png'
 import password from '../assets/icons/user-profile/password.png'
 import username from '../assets/icons/user-profile/username.png'
+import check from '../assets/icons/user-profile/check.svg'
+import upload from '../assets/icons/user-profile/upload.svg'
 
 export const IMAGES = {
     logo,
@@ -34,4 +36,6 @@ export const IMAGES = {
     email,
     password,
     username,
+    check,
+    upload,
 }

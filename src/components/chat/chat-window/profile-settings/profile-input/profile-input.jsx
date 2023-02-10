@@ -1,12 +1,14 @@
 import {
     ProfileInputField,
     ProfileInputIcon,
-    ProfileInputIconWrap,
     ProfileInputPlaceholderWrap,
     ProfileInputText,
     ProfileInputWrap,
+    SubmitButton,
+    SubmitButtonWrap,
 } from './profile-input.styles'
 import { IMAGES } from '../../../../../constants/images'
+import { useEffect, useState } from 'react'
 
 export const ProfileInput = ({
     icon,
@@ -15,7 +17,18 @@ export const ProfileInput = ({
     placeholder,
     text,
     name,
+    onsubmit,
 }) => {
+    const [showSubmit, setShowSubmit] = useState(false)
+
+    useEffect(() => {
+        if (value.length > 0) {
+            setShowSubmit(true)
+        } else {
+            setShowSubmit(false)
+        }
+    }, [value])
+
     return (
         <ProfileInputWrap>
             <ProfileInputPlaceholderWrap>
@@ -29,6 +42,11 @@ export const ProfileInput = ({
                 name={name}
                 type={name === 'password' ? 'password' : 'text'}
             ></ProfileInputField>
+            {showSubmit && (
+                <SubmitButtonWrap>
+                    <SubmitButton src={IMAGES.check} onClick={onsubmit} />
+                </SubmitButtonWrap>
+            )}
         </ProfileInputWrap>
     )
 }
