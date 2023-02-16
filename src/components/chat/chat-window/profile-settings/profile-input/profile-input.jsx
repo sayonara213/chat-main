@@ -29,6 +29,13 @@ export const ProfileInput = ({
         }
     }, [value])
 
+    const handleSubmit = () => {
+        if (value.length > 0) {
+            onsubmit()
+            setShowSubmit(false)
+        }
+    }
+
     return (
         <ProfileInputWrap>
             <ProfileInputPlaceholderWrap>
@@ -41,10 +48,11 @@ export const ProfileInput = ({
                 value={value}
                 name={name}
                 type={name === 'password' ? 'password' : 'text'}
+                autoComplete={'off'}
             ></ProfileInputField>
             {showSubmit && (
                 <SubmitButtonWrap>
-                    <SubmitButton src={IMAGES.check} onClick={onsubmit} />
+                    <SubmitButton src={IMAGES.check} onClick={handleSubmit} />
                 </SubmitButtonWrap>
             )}
         </ProfileInputWrap>

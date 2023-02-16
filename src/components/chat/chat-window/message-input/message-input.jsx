@@ -19,46 +19,45 @@ import { setEdit, setInput, setReply } from '../../../../redux/messageSlice'
 export const MessageInput = () => {
     const [user, loading, error] = useAuthState(auth)
     const dispatch = useDispatch()
-    const message = useSelector((state) => state.message.input)
+    const input = useSelector((state) => state.message.input)
     const currentChat = useSelector((state) => state.chats.currentChat)
     const isEdit = useSelector((state) => state.message.isEdit)
     const isReply = useSelector((state) => state.message.isReply)
     const selectedMessage = useSelector((state) => state.chats.selectedMessage)
 
+    const userRef = doc(collection(firestore, 'users'), user.uid)
+
     const handleSendMessage = async () => {
-        if (message !== '') {
-            const currentChatRef = doc(
-                collection(firestore, 'chats'),
-                currentChat.chatId
-            )
+        const currentChatRef = doc(
+            collection(firestore, 'chats'),
+            currentChat.chatId
+        )
+
+        if (input !== '') {
             const newMessageRef = doc(collection(currentChatRef, 'messages'))
 
             isReply
                 ? await setDoc(newMessageRef, {
                       messageId: newMessageRef.id,
-                      userName: user.displayName,
                       chatId: currentChat.chatId,
-                      uid: user.uid,
-                      photoURL: user.photoURL,
-                      text: message,
+                      user: userRef,
+                      text: input,
                       reply: selectedMessage,
                       createdAt: serverTimestamp(),
                   })
                 : await setDoc(newMessageRef, {
                       messageId: newMessageRef.id,
-                      userName: user.displayName,
                       chatId: currentChat.chatId,
-                      uid: user.uid,
-                      photoURL: user.photoURL,
-                      text: message,
+                      user: userRef,
+                      text: input,
                       createdAt: serverTimestamp(),
                   })
 
             await updateDoc(currentChatRef, {
                 lastMessage: {
                     messageId: newMessageRef.id,
-                    userName: user.displayName,
-                    text: message,
+                    user: userRef,
+                    text: input,
                     createdAt: serverTimestamp(),
                 },
             })
@@ -67,18 +66,19 @@ export const MessageInput = () => {
     }
 
     const handleEditMessage = async () => {
-        if (message !== '') {
+        const currentChatRef = doc(
+            collection(firestore, 'chats'),
+            currentChat.chatId
+        )
+
+        if (input !== '') {
             console.log(selectedMessage.messageId, currentChat.chatId)
-            const currentChatRef = doc(
-                collection(firestore, 'chats'),
-                currentChat.chatId
-            )
             const messageRef = doc(
                 collection(currentChatRef, 'messages'),
                 selectedMessage.messageId
             )
             await updateDoc(messageRef, {
-                text: message,
+                text: input,
                 isEdited: true,
             })
             dispatch(setInput(''))
@@ -87,7 +87,6 @@ export const MessageInput = () => {
     }
 
     const handleKeypress = (e) => {
-        console.log(e.keyCode)
         if (e.keyCode === 13 && !e.shiftKey) {
             e.preventDefault()
             !isEdit ? handleSendMessage() : handleEditMessage()
@@ -130,7 +129,7 @@ export const MessageInput = () => {
                     )}
                     <TextareaAutosize
                         type="text"
-                        value={message}
+                        value={input}
                         onChange={(e) => dispatch(setInput(e.target.value))}
                         placeholder={' Write your message...'}
                         rows={1}

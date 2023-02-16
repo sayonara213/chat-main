@@ -6,7 +6,7 @@ import {
     GoogleAuthProvider,
     updateProfile,
 } from 'firebase/auth'
-import { collection, addDoc } from 'firebase/firestore'
+import { collection, addDoc, doc, setDoc } from 'firebase/firestore'
 import { firestore, storage, auth } from './firebase'
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 
@@ -34,12 +34,13 @@ export const register = async (user) => {
                                     displayName: nicknameGenerator(user.email),
                                     photoURL: url,
                                 }).then(() => {
-                                    addDoc(collection(firestore, 'users'), {
+                                    setDoc(doc(firestore, 'users', user.uid), {
                                         uid: user.uid,
                                         email: user.email,
                                         authProvider: 'email',
                                         username: nicknameGenerator(user.email),
                                         avatar: url,
+                                        bio: '',
                                     })
                                 })
                             })
@@ -89,12 +90,13 @@ export const registerWithGoogle = async () => {
     await signInWithPopup(auth, provider)
         .then((result) => {
             const user = result.user
-            addDoc(collection(firestore, 'users'), {
+            setDoc(doc(firestore, 'users', user.uid), {
                 uid: user.uid,
                 email: user.email,
                 username: user.displayName,
                 authProvider: 'google',
                 avatar: user.photoURL,
+                bio: '',
             })
             return user
         })

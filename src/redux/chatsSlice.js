@@ -5,6 +5,7 @@ const chatsSlice = createSlice({
     initialState: {
         currentChat: null,
         isSettingsOpen: false,
+        isUserInfoOpen: false,
         isProfileOpen: false,
         selectedMessage: null,
     },
@@ -21,6 +22,9 @@ const chatsSlice = createSlice({
         switchProfile: (state) => {
             state.isProfileOpen = !state.isProfileOpen
         },
+        switchUserInfo: (state) => {
+            state.isUserInfoOpen = !state.isUserInfoOpen
+        },
     },
 })
 
@@ -31,4 +35,5 @@ export const {
     switchSettings,
     setSelectedMessage,
     switchProfile,
+    switchUserInfo,
 } = chatsSlice.actions

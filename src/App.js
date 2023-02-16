@@ -1,30 +1,32 @@
-import { Auth } from './components/authorization/auth'
 import { Theme } from './constants/theme'
-import { ToastContainer, toast } from 'react-toastify'
+import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { BrowserRouter } from 'react-router-dom'
+import { HashRouter } from 'react-router-dom'
 import { AppRouter } from './components/AppRouter'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { auth } from './services/firebase'
 import { Loading } from './components/loading/loading'
 
 import './App.css'
-import { TransparentContainer } from './components/transparent-container/transparent-container.styles'
 import { useDispatch, useSelector } from 'react-redux'
-import { switchSettings } from './redux/chatsSlice'
+import { switchSettings, switchUserInfo } from './redux/chatsSlice'
 import { ChatSettings } from './components/chat/chat-window/chat-settings/chat-settings'
-import { useState } from 'react'
-import { ProfileSettings } from './components/chat/chat-window/profile-settings/profile-settings'
+import { UserInfo } from './components/chat/chat-window/user-info/user-info'
 
 function App() {
     const [user, loading, error] = useAuthState(auth)
 
     const chatSettings = useSelector((state) => state.chats.isSettingsOpen)
+    const userInfo = useSelector((state) => state.chats.isUserInfoOpen)
     const currentChat = useSelector((state) => state.chats.currentChat)
     const dispatch = useDispatch()
 
     const handleChatSettings = () => {
         dispatch(switchSettings())
+    }
+
+    const handleUserInfo = () => {
+        dispatch(switchUserInfo())
     }
 
     if (loading) {
@@ -43,7 +45,8 @@ function App() {
                     chatType={currentChat.chatType}
                 />
             )}
-            <BrowserRouter>
+            {userInfo && <UserInfo handleClose={handleUserInfo} />}
+            <HashRouter>
                 <ToastContainer
                     position="top-center"
                     autoClose={4000}
@@ -57,7 +60,7 @@ function App() {
                     theme="dark"
                 />
                 <AppRouter />
-            </BrowserRouter>
+            </HashRouter>
         </Theme>
     )
 }

@@ -1,6 +1,6 @@
 import { ChatWrap } from './chat.styles'
 import { ChatWindow } from './chat-window/chat-window'
-import { SideMenu } from './side-menu/siide-menu'
+import { SideMenu } from './side-menu/side-menu'
 import { useDispatch, useSelector } from 'react-redux'
 import { ProfileSettings } from './chat-window/profile-settings/profile-settings'
 import { switchProfile } from '../../redux/chatsSlice'

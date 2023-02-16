@@ -21,7 +21,6 @@ export const ToolsList = styled.div`
     left: ${(props) => props.pos.x}px;
 
     width: 120px;
-    height: 120px;
 
     display: flex;
     align-items: center;
@@ -37,6 +36,7 @@ export const ToolsItemWrap = styled.div`
     width: 100%;
     height: 40px;
     display: flex;
+    flex-direction: row;
     align-items: center;
 
     &:hover {
@@ -45,8 +45,13 @@ export const ToolsItemWrap = styled.div`
 `
 
 export const ToolsItem = styled.p`
-    margin: 0 10px;
     width: 100%;
     font-family: 'regular', serif;
     color: ${(props) => props.theme.color.text};
+`
+
+export const ToolsItemIcon = styled.img`
+    margin: 10px;
+    height: 20px;
+    width: 20px;
 `

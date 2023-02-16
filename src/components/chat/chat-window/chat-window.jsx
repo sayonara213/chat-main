@@ -6,9 +6,7 @@ import {
     ChatHeaderButton,
     ChatHeaderText,
 } from './messages-container/messages-container.styles'
-import { IMAGES } from '../../../constants/images'
 import { useDispatch, useSelector } from 'react-redux'
-import { useState } from 'react'
 import { switchSettings } from '../../../redux/chatsSlice'
 import { CircleAvatar } from '../circle-avatar/circle-avatar'
 

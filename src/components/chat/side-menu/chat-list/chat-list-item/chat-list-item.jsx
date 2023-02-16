@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setCurrentChat } from '../../../../../redux/chatsSlice'
 import { useEffect, useState } from 'react'
 import { firestore } from '../../../../../services/firebase'
-import { collection, getDocs, query, where } from 'firebase/firestore'
+import { collection, getDoc, getDocs, query, where } from 'firebase/firestore'
 import { getAuth } from 'firebase/auth'
 
 export const ChatListItem = ({ chat }) => {
@@ -21,6 +21,7 @@ export const ChatListItem = ({ chat }) => {
     const [chatImage, setChatImage] = useState(IMAGES.noAvatar)
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true)
+    const [lastMessage, setLastMessage] = useState(null)
 
     const dispatch = useDispatch()
     const handleClick = () => {
@@ -63,9 +64,13 @@ export const ChatListItem = ({ chat }) => {
                         setLoading(false)
                     })
                 })
-            } else {
+            }
+            if (chat.lastMessage.user !== undefined) {
+                const fetchLastMessage = await getDoc(chat.lastMessage.user)
+                setLastMessage(fetchLastMessage.data())
                 setLoading(false)
             }
+            setLoading(false)
         }
         fetchUserData()
     }, [])
@@ -83,8 +88,8 @@ export const ChatListItem = ({ chat }) => {
             <ChatListItemInfoWrap>
                 <ChatListItemName>{chatName}</ChatListItemName>
                 <ChatListItemLastMessage>
-                    {chat.lastMessage
-                        ? `${chat.lastMessage.userName}: ${chat.lastMessage.text}`
+                    {chat.lastMessage && lastMessage
+                        ? `${lastMessage.username}: ${chat.lastMessage.text}`
                         : 'No messages yet'}
                 </ChatListItemLastMessage>
             </ChatListItemInfoWrap>

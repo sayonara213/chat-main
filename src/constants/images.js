@@ -17,6 +17,10 @@ import password from '../assets/icons/user-profile/password.png'
 import username from '../assets/icons/user-profile/username.png'
 import check from '../assets/icons/user-profile/check.svg'
 import upload from '../assets/icons/user-profile/upload.svg'
+import deleteMessage from '../assets/icons/tools/delete.svg'
+import copy from '../assets/icons/tools/copy.svg'
+import edit from '../assets/icons/tools/edit.svg'
+import reply from '../assets/icons/tools/reply.svg'
 
 export const IMAGES = {
     logo,
@@ -38,4 +42,8 @@ export const IMAGES = {
     username,
     check,
     upload,
+    deleteMessage,
+    copy,
+    edit,
+    reply,
 }

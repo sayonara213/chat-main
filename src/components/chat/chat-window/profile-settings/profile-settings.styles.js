@@ -49,6 +49,18 @@ export const ChangeAvatarWrap = styled.div`
 `
 
 export const ChangeAvatarButton = styled.input`
+    position: absolute;
+    width: 25px;
+    height: 25px;
+
+    cursor: pointer;
+
+    &::-webkit-file-upload-button {
+        visibility: hidden;
+    }
+`
+
+export const ChangeAvatarIcon = styled.img`
     width: 20px;
     height: 20px;
 `
@@ -138,7 +150,7 @@ export const ProfileBioLabel = styled.label`
     color: ${(props) => props.theme.color.textSecondary};
     font-family: 'regular', sans-serif;
 `
-export const InputSubmit = styled.button`
+export const SettingsButton = styled.button`
     width: 100%;
     height: 40px;
     margin: 10px 0;

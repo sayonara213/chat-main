@@ -1,18 +1,26 @@
-import { ToolsItem, ToolsItemWrap, ToolsList, ToolsWrap } from './tools.styles'
+import {
+    ToolsItem,
+    ToolsItemIcon,
+    ToolsItemWrap,
+    ToolsList,
+    ToolsWrap,
+} from './tools.styles'
 import { firestore } from '../../../../../services/firebase'
 import { collection, deleteDoc, doc, getDoc } from 'firebase/firestore'
 import { useDispatch } from 'react-redux'
 import { setEdit, setInput, setReply } from '../../../../../redux/messageSlice'
 import { setSelectedMessage } from '../../../../../redux/chatsSlice'
+import { IMAGES } from '../../../../../constants/images'
 
-export const Tools = ({ hideTools, pos, message, chatId }) => {
+export const Tools = ({ hideTools, pos, message, chatId, currentUser }) => {
+    const dispatch = useDispatch()
+
     const currentChatRef = doc(collection(firestore, 'chats'), chatId)
+
     const messageRef = doc(
         collection(currentChatRef, 'messages'),
         message.messageId
     )
-
-    const dispatch = useDispatch()
 
     const handleDeleteMessage = () => {
         deleteDoc(messageRef)
@@ -58,15 +66,21 @@ export const Tools = ({ hideTools, pos, message, chatId }) => {
         <ToolsWrap onClick={hideTools}>
             <ToolsList pos={pos}>
                 <ToolsItemWrap onClick={handleDeleteMessage}>
+                    <ToolsItemIcon src={IMAGES.deleteMessage} />
                     <ToolsItem>Delete</ToolsItem>
                 </ToolsItemWrap>
-                <ToolsItemWrap onClick={handleEditMessage}>
-                    <ToolsItem>Edit</ToolsItem>
-                </ToolsItemWrap>
+                {message.userName === currentUser && (
+                    <ToolsItemWrap onClick={handleEditMessage}>
+                        <ToolsItemIcon src={IMAGES.edit} />
+                        <ToolsItem>Edit</ToolsItem>
+                    </ToolsItemWrap>
+                )}
                 <ToolsItemWrap onClick={handleReplyMessage}>
+                    <ToolsItemIcon src={IMAGES.reply} />
                     <ToolsItem>Reply</ToolsItem>
                 </ToolsItemWrap>
                 <ToolsItemWrap onClick={handleCopyMessage}>
+                    <ToolsItemIcon src={IMAGES.copy} />
                     <ToolsItem>Copy</ToolsItem>
                 </ToolsItemWrap>
             </ToolsList>

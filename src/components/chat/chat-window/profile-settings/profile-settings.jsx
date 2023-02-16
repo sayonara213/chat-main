@@ -1,8 +1,8 @@
 import { TransparentContainer } from '../../../transparent-container/transparent-container.styles'
 import {
     ChangeAvatarButton,
+    ChangeAvatarIcon,
     ChangeAvatarWrap,
-    InputSubmit,
     MaxCharLabel,
     ProfileBioInput,
     ProfileBioLabel,
@@ -26,17 +26,23 @@ import { useFormik } from 'formik'
 import { useEffect, useState } from 'react'
 import { validationSchema } from './validation/user-info-validation'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
-import { collection, query, where, updateDoc, addDoc } from 'firebase/firestore'
-import { notifyError, notifySuccess } from '../../../../services/notification'
+import { collection, query, where, updateDoc } from 'firebase/firestore'
+import {
+    notifyEndProgress,
+    notifyError,
+    notifyProgress,
+    notifySuccess,
+} from '../../../../services/notification'
 import { updateProfile } from 'firebase/auth'
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
-import { nicknameGenerator } from '../../../../services/nickname-generator'
 
 export const ProfileSettings = ({ onclick }) => {
     const [userAuth, userLoading] = useAuthState(auth)
+
     const [userdb, loading, error, snapshot] = useCollectionData(
         query(collection(firestore, 'users'), where('uid', '==', userAuth.uid))
     )
+
     const [maxChar, setMaxChar] = useState(140)
 
     const [bio, setBio] = useState('')
@@ -98,6 +104,7 @@ export const ProfileSettings = ({ onclick }) => {
     }
 
     const uploadAvatar = (e) => {
+        const notification = notifyProgress('Uploading avatar...')
         const file = e.target.files[0]
 
         const fileRef = ref(storage, `avatars/${userAuth.uid}/avatar.png`)
@@ -110,6 +117,11 @@ export const ProfileSettings = ({ onclick }) => {
                     }).then(() => {
                         updateDoc(snapshot.docs[0].ref, {
                             avatar: url,
+                        }).then(() => {
+                            notifyEndProgress(
+                                notification,
+                                'Avatar uploaded successfully'
+                            )
                         })
                     })
                 })
@@ -123,6 +135,12 @@ export const ProfileSettings = ({ onclick }) => {
         setMaxChar(140 - bio.length)
     }, [bio])
 
+    useEffect(() => {
+        if (!loading) {
+            setBio(userdb[0].bio)
+        }
+    }, [loading, userdb])
+
     return (
         <TransparentContainer onClick={onclick}>
             <ProfileSettingsWrap>
@@ -135,11 +153,11 @@ export const ProfileSettings = ({ onclick }) => {
                         ></CircleAvatar>
                         <ChangeAvatarWrap>
                             <ChangeAvatarButton
-                                src={IMAGES.upload}
                                 type={'file'}
                                 accept="image/png, image/gif, image/jpeg"
                                 onChange={uploadAvatar}
                             />
+                            <ChangeAvatarIcon src={IMAGES.upload} />
                         </ChangeAvatarWrap>
                     </UserProfileAvatar>
                     <UserProfileName>{userAuth.displayName}</UserProfileName>

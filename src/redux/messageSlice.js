@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const authSlice = createSlice({
-    name: 'message',
+const inputSlice = createSlice({
+    name: 'input',
     initialState: {
         isEdit: false,
         isReply: false,
@@ -20,6 +20,6 @@ const authSlice = createSlice({
     },
 })
 
-export default authSlice.reducer
+export default inputSlice.reducer
 
-export const { setEdit, setInput, setReply } = authSlice.actions
+export const { setEdit, setInput, setReply } = inputSlice.actions

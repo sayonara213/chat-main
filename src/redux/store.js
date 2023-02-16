@@ -7,12 +7,14 @@ import authSlice from './authSlice'
 import chatsSlice from './chatsSlice'
 import searchSlice from './searchChatSlice'
 import messageSlice from './messageSlice'
+import selectedUserSlice from './selectedUserSlice'
 
 const rootReducer = combineReducers({
     auth: authSlice,
     chats: chatsSlice,
     search: searchSlice,
     message: messageSlice,
+    user: selectedUserSlice,
 })
 
 const store = configureStore({

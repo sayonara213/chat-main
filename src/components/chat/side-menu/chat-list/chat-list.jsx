@@ -19,12 +19,14 @@ import {
     query,
     setDoc,
     where,
+    serverTimestamp,
 } from 'firebase/firestore'
 import { firestore } from '../../../../services/firebase'
 import { getAuth } from 'firebase/auth'
 import { UserItem } from './user-item/user-item'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { setCurrentChat } from '../../../../redux/chatsSlice'
+import { ChatListItemPlaceholder } from './chat-list-item/chat-list-item.styles'
 
 export const ChatList = () => {
     const { search, results } = useSelector((state) => state.search)
@@ -47,7 +49,7 @@ export const ChatList = () => {
     const [chats, loading, error, snapshot] = useCollectionData(
         query(
             chatsRef,
-            /* orderBy('lastMessage.createdAt', 'desc'),*/
+            orderBy('lastMessage.createdAt', 'desc'),
             where('users', 'array-contains', getAuth().currentUser.uid)
         )
     )
@@ -79,12 +81,15 @@ export const ChatList = () => {
                 chatName: 'Personal',
                 chatType: 'personal',
                 users: [user.uid, getAuth().currentUser.uid],
+                lastMessage: {
+                    createdAt: serverTimestamp(),
+                },
             }).then(() => {
                 dispatch(
                     setCurrentChat({
                         chatId: newChatRef.id,
                         chatName: user.username,
-                        chatImage: user.photoURL,
+                        chatImage: user.avatar,
                         chatType: 'personal',
                         chatUser: user,
                     })
@@ -115,12 +120,19 @@ export const ChatList = () => {
         const chat = await getDocs(chatsRef)
 
         return chat.docs.find((chat) =>
-            chat.data().users.some((member) => member.uid === user.uid)
+            chat.data().users.some((member) => member === user.uid)
         )
     }
 
     if (loading) {
-        return <div>Loading...</div>
+        return (
+            <ChatListWrap>
+                <ChatListItemPlaceholder />
+                <ChatListItemPlaceholder />
+                <ChatListItemPlaceholder />
+                <ChatListItemPlaceholder />
+            </ChatListWrap>
+        )
     }
 
     return (
